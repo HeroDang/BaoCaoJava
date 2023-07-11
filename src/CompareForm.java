@@ -13,8 +13,6 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class CompareForm extends JFrame{
-
-
     private JPanel pnMain;
     private JLabel lbTitle;
     private JPanel pnImitiate;
@@ -23,8 +21,8 @@ public class CompareForm extends JFrame{
     private JPanel pnCreateArray;
     private JSpinner spNum;
     private JButton btnCreateArray, btnDeleteArray, btnSetZero;
-    private JPanel pnSetValueArray;
-    private JButton btnRandom, btnByHand, btnOpenFile, btnReadFile;
+//    private JPanel pnSetValueArray;
+    private JButton btnRandom;
 //    private JPanel pnCode;
 //    private JSlider slSize;
 //    private JScrollPane pnScroll;
@@ -41,16 +39,21 @@ public class CompareForm extends JFrame{
     private JRadioButton rdIncrease, rdDecrease;
     private ActionListener eIncrease, eDecrease;
     private boolean isIncrease = true;
-    private JButton btnSort, btnStop;
+    private JButton btnSort;
 //    private JSlider slSpeed;
     private ChangeListener eSpeed;
     public int num;
+
+    public int num2;
     private JLabel[] lbArrays;
 
     private JLabel[] lbArrays2;
     private int[] array;
     private int[] array2;
     private Thread[] threads = new Thread[1000000];
+
+
+    private Thread[] threads2 = new Thread[1000000];
     private int curT = -1;
     private int curT2 = -1;
     private int time = 50;
@@ -62,7 +65,7 @@ public class CompareForm extends JFrame{
     private int[] lbR = new int[50];
     private File file = new File ("src/array.txt");
     private float speed;
-    private JButton btnNewButton;
+//    private JButton btnNewButton;
     private JPanel pnImitiate2;
     private JPanel pnAlgorithm2;
     private JLabel lbNum;
@@ -76,6 +79,8 @@ public class CompareForm extends JFrame{
     private JRadioButton rdInsertionSort2;
     private JRadioButton rdBubbleSort2;
     private JButton btnBack;
+    private JLabel lbTime1;
+    private JLabel lbTime2;
     private boolean isStep = false;
     private JLabel lbPoint1 = new JLabel();
     private JLabel lbPoint2 = new JLabel();
@@ -88,14 +93,17 @@ public class CompareForm extends JFrame{
     private Color selectedGreen = new Color(153, 255, 153);
     private Color selectedYellow = new Color(255, 255, 153);
 
+    private long time1 = 0, time2 = 0;
+
 
     public CompareForm(){
-        setTitle("Mo Phong Thuat Toan Title");
+        setTitle("Mo Phong Thuat Toan");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1372, 742);
         setContentPane(pnMain);
         setLocationRelativeTo(null);
         setVisible(true);
+
 
         grDirect = new ButtonGroup();
         grDirect.add(rdDecrease);grDirect.add(rdIncrease);
@@ -125,6 +133,7 @@ public class CompareForm extends JFrame{
 
         rdInterchangeSort2.setSelected(true);
 
+
 //        slSpeed.setOrientation(SwingConstants.VERTICAL);
 
 
@@ -134,22 +143,21 @@ public class CompareForm extends JFrame{
         pnImitiate2.setBorder(new TitledBorder(null, "Khung ch\u1EA1y m\u00F4 ph\u1ECFng 2", TitledBorder.LEADING, TitledBorder.TOP, null, null));
         pnImitiate2.setLayout(null);
 
-        pnSetValueArray.setBorder(new TitledBorder(null, "Tạo mảng dữ liệu", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+
+//        pnSetValueArray.setBorder(new TitledBorder(null, "Tạo mảng dữ liệu", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
         pnCreateArray.setBorder(new TitledBorder(null, "Kh\u1EDFi t\u1EA1o m\u1EA3ng", TitledBorder.LEADING, TitledBorder.TOP, null, null));
 
         GroupLayout gl_pnArray = new GroupLayout(pnArray);
         gl_pnArray.setHorizontalGroup(
                 gl_pnArray.createParallelGroup(GroupLayout.Alignment.LEADING)
-                        .addComponent(pnSetValueArray, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
                         .addComponent(pnCreateArray, GroupLayout.DEFAULT_SIZE, 307, Short.MAX_VALUE)
         );
         gl_pnArray.setVerticalGroup(
                 gl_pnArray.createParallelGroup(GroupLayout.Alignment.TRAILING)
                         .addGroup(GroupLayout.Alignment.LEADING, gl_pnArray.createSequentialGroup()
                                 .addComponent(pnCreateArray, GroupLayout.PREFERRED_SIZE, 143, GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(pnSetValueArray, GroupLayout.DEFAULT_SIZE, 110, Short.MAX_VALUE))
+                                .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED))
         );
 
         model = new DefaultListModel<>();
@@ -167,108 +175,109 @@ public class CompareForm extends JFrame{
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setVisible(false);
                 MainForm mainForm = new MainForm();
-                mainForm.show();
+                mainForm.setVisible(true);
             }
         });
 
-        btnReadFile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent arg0) {
-                deleteArrays();
-                try {
-                    Scanner in = new Scanner(file);
-                    num = Integer.parseInt(in.nextLine());
-                    array = new int[num];
-                    array2 = new int[num];
-                    int pos = 0;
-                    while (in.hasNextLine()) {
-                        array[pos] = Integer.parseInt(in.nextLine());
-                        array2[pos] = Integer.parseInt(in.nextLine());
-                        pos++;
-                    }
-                    in.close();
-                    lbArrays = new JLabel[num];
+//        btnReadFile.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent arg0) {
+//                deleteArrays();
+//                try {
+//                    Scanner in = new Scanner(file);
+//                    num = Integer.parseInt(in.nextLine());
+//                    array = new int[num];
+//                    array2 = new int[num];
+//                    int pos = 0;
+//                    while (in.hasNextLine()) {
+//                        array[pos] = Integer.parseInt(in.nextLine());
+//                        array2[pos] = Integer.parseInt(in.nextLine());
+//                        pos++;
+//                    }
+//                    in.close();
+//                    lbArrays = new JLabel[num];
+//
+//                    lbArrays2 = new JLabel[num];
+//
+//                    for (int i = 0; i < num; i++) {
+//                        //create label, set text "0"
+//
+//                        lbArrays[i] = new JLabel(String.valueOf(array[i]));
+//                        lbArrays2[i] = new JLabel(String.valueOf(array2[i]));
+//
+//                        pnImitiate.add(lbArrays[i]);
+//                        pnImitiate2.add(lbArrays2[i]);
+//
+//                        //set size label
+//                        lbArrays[i].setSize(50,50);
+//                        lbArrays[i].setOpaque(true);
+//                        lbArrays[i].setForeground(Color.BLUE);
+//
+//                        lbArrays2[i].setSize(50,50);
+//                        lbArrays2[i].setOpaque(true);
+//                        lbArrays2[i].setForeground(Color.BLUE);
+//
+//                        //set location label
+//                        if (i == 0) {
+//                            lbArrays[i].setLocation(((int) (((18 - num) * 0.5) * 70) + 100), 150);
+//                            lbArrays2[i].setLocation(((int) (((18 - num) * 0.5) * 70) + 100), 150);
+//                        }
+//                        else {
+//                            lbArrays[i].setLocation((lbArrays[i - 1].getX() + 70), 150);
+//                            lbArrays2[i].setLocation((lbArrays[i - 1].getX() + 70), 150);
+//                        }
+//
+//                        //set fonts
+//                        lbArrays[i].setFont(new Font("Tahoma", Font.PLAIN, 30));
+//
+//                        //set background color
+//                        lbArrays[i].setBackground(SystemColor.inactiveCaption);
+//
+//                        //set text alignment center
+//                        lbArrays[i].setHorizontalAlignment(SwingConstants.CENTER);
+//                        lbArrays[i].setVerticalAlignment(SwingConstants.CENTER);
+//
+//                        //set fonts
+//                        lbArrays2[i].setFont(new Font("Tahoma", Font.PLAIN, 30));
+//
+//                        //set background color
+//                        lbArrays2[i].setBackground(SystemColor.inactiveCaption);
+//
+//                        //set text alignment center
+//                        lbArrays2[i].setHorizontalAlignment(SwingConstants.CENTER);
+//                        lbArrays2[i].setVerticalAlignment(SwingConstants.CENTER);
+//                    }
+//                    pnImitiate.setVisible(true);
+//                    pnImitiate.validate();
+//                    pnImitiate.repaint();
+//
+//                    pnImitiate2.setVisible(true);
+//                    pnImitiate2.validate();
+//                    pnImitiate2.repaint();
+//
+//                    setState(2);
+//                } catch (FileNotFoundException e) {
+//                    // TODO Auto-generated catch block
+//                    e.printStackTrace();
+//                }
+//            }
+//        });
 
-                    lbArrays2 = new JLabel[num];
-
-                    for (int i = 0; i < num; i++) {
-                        //create label, set text "0"
-
-                        lbArrays[i] = new JLabel(String.valueOf(array[i]));
-                        lbArrays2[i] = new JLabel(String.valueOf(array2[i]));
-
-                        pnImitiate.add(lbArrays[i]);
-                        pnImitiate2.add(lbArrays2[i]);
-
-                        //set size label
-                        lbArrays[i].setSize(50,50);
-                        lbArrays[i].setOpaque(true);
-                        lbArrays[i].setForeground(Color.BLUE);
-
-                        lbArrays2[i].setSize(50,50);
-                        lbArrays2[i].setOpaque(true);
-                        lbArrays2[i].setForeground(Color.BLUE);
-
-                        //set location label
-                        if (i == 0) {
-                            lbArrays[i].setLocation(((int) (((18 - num) * 0.5) * 70) + 100), 150);
-                            lbArrays2[i].setLocation(((int) (((18 - num) * 0.5) * 70) + 100), 150);
-                        }
-                        else {
-                            lbArrays[i].setLocation((lbArrays[i - 1].getX() + 70), 150);
-                            lbArrays2[i].setLocation((lbArrays[i - 1].getX() + 70), 150);
-                        }
-
-                        //set fonts
-                        lbArrays[i].setFont(new Font("Tahoma", Font.PLAIN, 30));
-
-                        //set background color
-                        lbArrays[i].setBackground(SystemColor.inactiveCaption);
-
-                        //set text alignment center
-                        lbArrays[i].setHorizontalAlignment(SwingConstants.CENTER);
-                        lbArrays[i].setVerticalAlignment(SwingConstants.CENTER);
-
-                        //set fonts
-                        lbArrays2[i].setFont(new Font("Tahoma", Font.PLAIN, 30));
-
-                        //set background color
-                        lbArrays2[i].setBackground(SystemColor.inactiveCaption);
-
-                        //set text alignment center
-                        lbArrays2[i].setHorizontalAlignment(SwingConstants.CENTER);
-                        lbArrays2[i].setVerticalAlignment(SwingConstants.CENTER);
-                    }
-                    pnImitiate.setVisible(true);
-                    pnImitiate.validate();
-                    pnImitiate.repaint();
-
-                    pnImitiate2.setVisible(true);
-                    pnImitiate2.validate();
-                    pnImitiate2.repaint();
-
-                    setState(2);
-                } catch (FileNotFoundException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        btnOpenFile.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Desktop desktop = null;
-                    if (Desktop.isDesktopSupported()) {
-                        desktop = Desktop.getDesktop();
-                    }
-                    desktop.open(file);
-                } catch (IOException ioe) {
-                    //file isn't existed
-                    ioe.printStackTrace();
-                }
-            }
-        });
+//        btnOpenFile.addActionListener(new ActionListener() {
+//            public void actionPerformed(ActionEvent e) {
+//                try {
+//                    Desktop desktop = null;
+//                    if (Desktop.isDesktopSupported()) {
+//                        desktop = Desktop.getDesktop();
+//                    }
+//                    desktop.open(file);
+//                } catch (IOException ioe) {
+//                    //file isn't existed
+//                    ioe.printStackTrace();
+//                }
+//            }
+//        });
 
         btnSort.addActionListener(new ActionListener() {
 
@@ -303,23 +312,7 @@ public class CompareForm extends JFrame{
                                 QuickSort();
                             if (rdMergeSort.isSelected())
                                 MergeSort();
-//22222222222222222222222222222
 
-//                    if (rdBubbleSort.isSelected())
-//                        BubbleSort();
-//                    if (rdInsertionSort.isSelected())
-//                        InsertionSort();
-//                    if (rdShellSort.isSelected())
-//                        ShellSort();
-//                    if (rdHeapSort.isSelected()) {
-//                        HeapSort();
-//                        threadReLocate();
-//                    }
-//
-//                    if (rdQuickSort.isSelected())
-//                        QuickSort();
-//                    if (rdMergeSort.isSelected())
-//                        MergeSort();
                             waitEnd();
                         }
                     }
@@ -338,15 +331,17 @@ public class CompareForm extends JFrame{
                                 InterchangeSort2();
                             if (rdSelectionSort2.isSelected())
                                 SelectionSort2();
+                            if (rdBubbleSort2.isSelected())
+                                BubbleSort2();
+                            if (rdInsertionSort2.isSelected())
+                                InsertionSort2();
+                            if (rdShellSort2.isSelected())
+                                ShellSort2();
 
 //22222222222222222222222222222
 
-//                    if (rdBubbleSort.isSelected())
-//                        BubbleSort();
-//                    if (rdInsertionSort.isSelected())
-//                        InsertionSort();
-//                    if (rdShellSort.isSelected())
-//                        ShellSort();
+
+
 //                    if (rdHeapSort.isSelected()) {
 //                        HeapSort();
 //                        threadReLocate();
@@ -363,6 +358,10 @@ public class CompareForm extends JFrame{
 
                 leftSort.start();
                 rightSort.start();
+
+
+                lbTime1.setText("Thời giaṇ chạy: "+time1 +" ms");
+                lbTime2.setText("Thời giaṇ chạy: "+time2 +" ms");
             }
         });
 
@@ -619,9 +618,9 @@ public class CompareForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(true);
-                btnOpenFile.setEnabled(true);
-                btnReadFile.setEnabled(true);
+//                btnByHand.setEnabled(true);
+//                btnOpenFile.setEnabled(true);
+//                btnReadFile.setEnabled(true);
 
                 rdInterchangeSort.setEnabled(true);
                 rdSelectionSort.setEnabled(true);
@@ -647,7 +646,7 @@ public class CompareForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
                 break;
 
             case 1: //created arrays, be waiting to set value arrays.
@@ -655,9 +654,9 @@ public class CompareForm extends JFrame{
                 btnSetZero.setEnabled(true);
 
                 btnRandom.setEnabled(true);
-                btnByHand.setEnabled(true);
-                btnOpenFile.setEnabled(true);
-                btnReadFile.setEnabled(true);
+//                btnByHand.setEnabled(true);
+//                btnOpenFile.setEnabled(true);
+//                btnReadFile.setEnabled(true);
 
                 rdInterchangeSort.setEnabled(true);
                 rdSelectionSort.setEnabled(true);
@@ -711,7 +710,7 @@ public class CompareForm extends JFrame{
                 btnSort.setEnabled(true);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
                 break;
 
             case 3: //sorting
@@ -720,9 +719,9 @@ public class CompareForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(false);
-                btnOpenFile.setEnabled(false);
-                btnReadFile.setEnabled(false);
+//                btnByHand.setEnabled(false);
+//                btnOpenFile.setEnabled(false);
+//                btnReadFile.setEnabled(false);
 
                 rdIncrease.setEnabled(false);
                 rdDecrease.setEnabled(false);
@@ -748,7 +747,7 @@ public class CompareForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(true);
                 //btnNext2.setEnabled(true);
-                btnStop.setEnabled(true);
+//                btnStop.setEnabled(true);
                 break;
 
             case 4: //sort done
@@ -757,9 +756,9 @@ public class CompareForm extends JFrame{
                 btnSetZero.setEnabled(true);
 
                 btnRandom.setEnabled(true);
-                btnByHand.setEnabled(true);
-                btnOpenFile.setEnabled(true);
-                btnReadFile.setEnabled(true);
+//                btnByHand.setEnabled(true);
+//                btnOpenFile.setEnabled(true);
+//                btnReadFile.setEnabled(true);
 
                 rdInterchangeSort.setEnabled(true);
                 rdSelectionSort.setEnabled(true);
@@ -785,7 +784,7 @@ public class CompareForm extends JFrame{
                 btnSort.setEnabled(true);
                 //btnNext.setEnabled(true);
                 //btnNext2.setEnabled(true);
-                btnStop.setEnabled(true);
+//                btnStop.setEnabled(true);
                 break;
             default:
                 btnCreateArray.setEnabled(true);
@@ -793,9 +792,9 @@ public class CompareForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(true);
-                btnOpenFile.setEnabled(true);
-                btnReadFile.setEnabled(true);
+//                btnByHand.setEnabled(true);
+//                btnOpenFile.setEnabled(true);
+//                btnReadFile.setEnabled(true);
 
                 rdInterchangeSort.setEnabled(true);
                 rdSelectionSort.setEnabled(true);
@@ -821,7 +820,7 @@ public class CompareForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
         }
     }
 
@@ -944,6 +943,7 @@ public class CompareForm extends JFrame{
         for (int i = 0; i < curT; i++) {
             try {
                 threads[i].interrupt();
+                threads2[i].interrupt();
             }
             catch (Exception e) {
 
@@ -1236,12 +1236,12 @@ public class CompareForm extends JFrame{
         curT2 ++;
 
         int cur = curT2;
-        threads[cur] = new Thread(new Runnable() {
+        threads2[cur] = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (cur != 0) {
-                        threads[cur-1].join();
+                        threads2[cur-1].join();
                     }
 
                     lb1.setBackground(processingColor);
@@ -1275,12 +1275,12 @@ public class CompareForm extends JFrame{
                 }
             }
         });
-        threads[cur].start();
+        threads2[cur].start();
     }
 
     public void setlbPoint(JLabel lbPoint, int i, String s) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -1312,14 +1312,14 @@ public class CompareForm extends JFrame{
 
     public void setlbPoint2(JLabel lbPoint, int i, String s) {
         curT2 ++;
-        System.out.println(curT2);
+//        System.out.println(curT2);
         int cur = curT2;
-        threads[cur] = new Thread(new Runnable() {
+        threads2[cur] = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (cur != 0)
-                        threads[cur - 1].join();
+                        threads2[cur - 1].join();
                     if (i == -1) {
                         lbPoint.setText("");
                         return;
@@ -1339,13 +1339,14 @@ public class CompareForm extends JFrame{
                 } catch (Exception e){}
             }
         });
-        threads[cur].start();
+        threads2[cur].start();
     }
 
     /**
      * Interchange Sort
      */
     public void InterchangeSort() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             highLight(1);
             int i, j;
@@ -1389,9 +1390,13 @@ public class CompareForm extends JFrame{
             }
             highLight(0);
         }
+
+        long endTime = System.currentTimeMillis();
+        time1 = endTime - startTime;
     }
 
     public void InterchangeSort2() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             highLight2(1);
             int i, j;
@@ -1435,12 +1440,15 @@ public class CompareForm extends JFrame{
             }
             highLight2(0);
         }
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
     }
 
     /**
      * Selection Sort
      */
     public void SelectionSort() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             highLight(1);
             int min,i,j;
@@ -1499,9 +1507,12 @@ public class CompareForm extends JFrame{
             }
         }
         highLight(0);
+        long endTime = System.currentTimeMillis();
+        time1 = endTime-startTime;
     }
 
     public void SelectionSort2() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             highLight2(1);
             int min,i,j;
@@ -1560,12 +1571,15 @@ public class CompareForm extends JFrame{
             }
         }
         highLight2(0);
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
     }
 
     /*
      * Bubble Sort
      */
     public void BubbleSort() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             highLight(1);
             int i, j;
@@ -1609,6 +1623,55 @@ public class CompareForm extends JFrame{
             }
             highLight(0);
         }
+        long endTime = System.currentTimeMillis();
+        time1 = endTime-startTime;
+    }
+
+    public void BubbleSort2() {
+        long startTime = System.currentTimeMillis();
+        if (isIncrease) {
+            highLight2(1);
+            int i, j;
+            for (i = 0; i< num; i++) {
+                highLight2(2);
+                setlbPoint2(lbPoint12, i, "i = ");
+                for (j = num - 1; j > i; j--) {
+                    highLight2(3);
+                    highLight2(4);
+                    setlbPoint2(lbPoint22, j, "j = ");
+                    if(array2[j]< array2[j-1]) {
+                        int temp = array2[j];
+                        array2[j] = array2[j - 1];
+                        array2[j - 1] = temp;
+                        highLight2(5);
+                        Swap2(lbArrays2[j - 1], lbArrays2[j]);
+                    }
+                }
+            }
+            highLight2(0);
+        } else {
+            highLight2(1);
+            int i, j;
+            for (i = 0; i< num; i++) {
+                highLight2(2);
+                setlbPoint2(lbPoint12, i, "i = ");
+                for (j = num - 1; j > i; j--) {
+                    highLight2(3);
+                    highLight2(4);
+                    setlbPoint2(lbPoint22, j, "j = ");
+                    if(array2[j] > array2[j-1]) {
+                        int temp = array2[j];
+                        array2[j] = array2[j - 1];
+                        array2[j - 1] = temp;
+                        highLight2(5);
+                        Swap2(lbArrays2[j - 1], lbArrays2[j]);
+                    }
+                }
+            }
+            highLight2(0);
+        }
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
     }
 
     public void Move(JLabel lb1, JLabel lb2, int pos) {
@@ -1657,10 +1720,57 @@ public class CompareForm extends JFrame{
         threads[cur].start();
     }
 
+    public void Move2(JLabel lb1, JLabel lb2, int pos) {
+        int x1 = lb1.getX();
+        int x2 = lb2.getX();
+        curT2++;
+
+        int cur = curT2;
+        threads2[cur] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (cur != 0) {
+                        threads2[cur - 1].join();
+                    }
+                    lb1.setOpaque(true);
+                    lb2.setOpaque(true);
+                    lb1.setBackground(processingColor);
+                    lb2.setBackground(processingColor);
+                    while (lb1.getY() > 100) {
+                        lb1.setLocation(lb1.getX(), lb1.getY() - 10);
+                        Thread.sleep(time);
+                    }
+                    while (lb1.getX() > x2) {
+                        lb2.setLocation(lb2.getX() + 10, lb2.getY());
+                        lb1.setLocation(lb1.getX() - 10, lb1.getY());
+                        Thread.sleep(time);
+                    }
+                    while (pos == 0 && lb1.getY() < 150) {
+                        lb1.setLocation(lb1.getX(), lb1.getY() + 10);
+                        Thread.sleep(time);
+                    }
+                    String txtLb1 = lb1.getText();
+                    lb1.setText(lb2.getText());
+                    lb2.setText(txtLb1);
+                    int y1 = lb1.getY();
+                    lb1.setLocation(x1, lb2.getY());
+                    lb2.setLocation(x2, y1);
+                    lb1.setBackground(SystemColor.inactiveCaption);
+                    if (pos == 0)
+                        lb2.setBackground(SystemColor.inactiveCaption);
+                } catch (Exception e) {
+                }
+            }
+        });
+        threads2[cur].start();
+    }
+
     /*
      * Insertion Sort
      */
     public void InsertionSort() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             int pos, i;
             highLight(1);
@@ -1680,10 +1790,8 @@ public class CompareForm extends JFrame{
                     highLight(7);
                     if (pos > 0 && array[pos - 1] <= x) {
                         Move(lbArrays[pos + 1], lbArrays[pos], 0);
-                        Move(lbArrays2[pos + 1], lbArrays2[pos], 0);
                     } else {
                         Move(lbArrays[pos + 1], lbArrays[pos], pos);
-                        Move(lbArrays2[pos + 1], lbArrays2[pos], pos);
                     }
                     pos--;
                     highLight(8);
@@ -1713,10 +1821,8 @@ public class CompareForm extends JFrame{
                     highLight(7);
                     if (pos > 0 && array[pos - 1] >= x) {
                         Move(lbArrays[pos + 1], lbArrays[pos], 0);
-                        Move(lbArrays2[pos + 1], lbArrays2[pos], 0);
                     } else {
                         Move(lbArrays[pos + 1], lbArrays[pos], pos);
-                        Move(lbArrays2[pos + 1], lbArrays2[pos], pos);
                     }
                     pos--;
                     highLight(8);
@@ -1727,6 +1833,76 @@ public class CompareForm extends JFrame{
             }
             highLight(0);
         }
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
+    }
+
+    public void InsertionSort2() {
+        long startTime = System.currentTimeMillis();
+        if (isIncrease) {
+            int pos, i;
+            highLight2(1);
+            int x;
+            highLight2(2);
+            for (i = 1; i < num; i++) {
+                highLight2(3);
+                setlbPoint2(lbPoint12, i, "i = ");
+                x = array2[i];
+                highLight2(4);
+                pos = i - 1;
+                highLight2(5);
+                while ((pos >= 0) && (array2[pos] > x)) {
+                    highLight2(6);
+                    setlbPoint2(lbPoint22, pos, "j = ");
+                    array2[pos + 1] = array2[pos];
+                    highLight2(7);
+                    if (pos > 0 && array2[pos - 1] <= x) {
+                        Move2(lbArrays2[pos + 1], lbArrays2[pos], 0);
+                    } else {
+                        Move2(lbArrays2[pos + 1], lbArrays2[pos], pos);
+                    }
+                    pos--;
+                    highLight2(8);
+                }
+                highLight2(9);
+                array2[pos + 1] = x;
+                setlbPoint2(lbPoint22, -1, null);
+            }
+            highLight2(0);
+        }
+        else {
+            int pos, i;
+            highLight2(1);
+            int x;
+            highLight2(2);
+            for (i = 1; i < num; i++) {
+                highLight2(3);
+                setlbPoint2(lbPoint12, i, "i = ");
+                x = array2[i];
+                highLight2(4);
+                pos = i - 1;
+                highLight2(5);
+                while ((pos >= 0) && (array2[pos] < x)) {
+                    highLight2(6);
+                    setlbPoint2(lbPoint22, pos, "j = ");
+                    array2[pos + 1] = array2[pos];
+                    highLight2(7);
+                    if (pos > 0 && array2[pos - 1] >= x) {
+                        Move2(lbArrays2[pos + 1], lbArrays2[pos], 0);
+                    } else {
+                        Move2(lbArrays2[pos + 1], lbArrays2[pos], pos);
+                    }
+                    pos--;
+                    highLight2(8);
+                }
+                array2[pos + 1] = x;
+                highLight2(9);
+                setlbPoint2(lbPoint22, -1, null);
+            }
+            highLight2(0);
+        }
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
     }
 
     /*
@@ -1782,7 +1958,57 @@ public class CompareForm extends JFrame{
         threads[cur].start();
     }
 
+    public void MoveShell2(JLabel lb1, JLabel lb2,  int next) {
+        int x1 = lb1.getX();
+        int x2 = lb2.getX();
+        curT2++;
+
+        int cur = curT2;
+        threads2[cur] = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    if (cur != 0) {
+                        threads2[cur - 1].join();
+                    }
+                    setBackgroundMoving(lb1, lb2);
+                    while (lb2.getY() < 200) {
+                        if (lb1.getY() > 100)
+                            lb1.setLocation(lb1.getX(), lb1.getY() - 10);
+                        lb2.setLocation(lb2.getX(), lb2.getY() + 10);
+                        Thread.sleep(time);
+                    }
+                    while (lb1.getX() > x2) {
+                        lb2.setLocation(lb2.getX() + 10, lb2.getY());
+                        lb1.setLocation(lb1.getX() - 10, lb1.getY());
+                        Thread.sleep(time);
+                    }
+                    while (lb2.getY() > 150) {
+                        if (next == 0) {
+                            lb1.setLocation(lb1.getX(), lb1.getY() + 10);
+                        }
+                        lb2.setLocation(lb2.getX(), lb2.getY() - 10);
+                        Thread.sleep(time);
+                    }
+                    String txtLb1 = lb1.getText();
+                    lb1.setText(lb2.getText());
+                    lb2.setText(txtLb1);
+                    int y1 = lb1.getY();
+                    lb1.setLocation(x1, lb2.getY());
+                    lb2.setLocation(x2, y1);
+                    if (next == 0)
+                        setBackgroundDone(lb1, lb2);
+                    else
+                        lb1.setBackground(SystemColor.inactiveCaption);
+                } catch (Exception e) {
+                }
+            }
+        });
+        threads2[cur].start();
+    }
+
     public void ShellSort() {
+        long startTime = System.currentTimeMillis();
         if (isIncrease) {
             int len, i, j, x;
             highLight(1);
@@ -1875,6 +2101,106 @@ public class CompareForm extends JFrame{
             }
         }
         highLight(0);
+        long endTime = System.currentTimeMillis();
+        time1 = endTime-startTime;
+    }
+
+    public void ShellSort2() {
+        long startTime = System.currentTimeMillis();
+        if (isIncrease) {
+            int len, i, j, x;
+            highLight2(1);
+            for (len = 11; len > 0; len /= 2) {
+                highLight2(2);
+                for (i = len; i < num; i ++) {
+                    highLight2(3);
+                    setlbPoint2(lbPoint12, i, "i = ");
+                    x = array2[i];
+                    highLight2(4);
+                    j = i - len;
+                    highLight2(5);
+                    while (j >= 0 && x < array2[j]) {
+                        highLight2(6);
+                        setlbPoint2(lbPoint22, j, "j = ");
+                        array2[j + len] = array2[j];
+                        highLight2(7);
+                        if (len > 1) {
+                            if (j < len) {
+                                MoveShell2(lbArrays2[j + len], lbArrays2[j], 0);
+                            } else {
+                                if (x >= array2[j - len])
+                                    MoveShell2(lbArrays2[j + len], lbArrays2[j], 0);
+                                else
+                                    MoveShell2(lbArrays2[j + len], lbArrays2[j], 1);
+                            }
+                        } else {
+                            if (j < len) {
+                                Move2(lbArrays2[j + len], lbArrays2[j], 0);
+                            } else {
+                                if (x >= array2[j - len])
+                                    Move2(lbArrays2[j + len], lbArrays2[j], 0);
+                                else
+                                    Move2(lbArrays2[j + len], lbArrays2[j], 1);
+                            }
+                        }
+                        j -= len;
+                        highLight2(8);
+                    }
+                    array2[j + len] = x;
+                    highLight2(9);
+                    setlbPoint2(lbPoint22, -1, null);
+                }
+            }
+            highLight2(0);
+        }
+        else {
+            int len, i, j, x;
+            highLight2(1);
+            for (len = 11; len > 0; len /= 2) {
+                highLight2(2);
+                for (i = len; i < num; i ++) {
+                    highLight2(3);
+                    setlbPoint2(lbPoint12, i, "i = ");
+                    x = array2[i];
+                    highLight2(4);
+                    j = i - len;
+                    highLight2(5);
+                    while (j >= 0 && x > array2[j]) {
+                        highLight2(6);
+                        setlbPoint2(lbPoint22, j, "j = ");
+                        array2[j + len] = array2[j];
+                        highLight2(7);
+                        if (len > 1) {
+                            if (j < len) {
+                                MoveShell2(lbArrays2[j + len], lbArrays2[j], 0);
+                            } else {
+                                if (x <= array[j - len])
+                                    MoveShell2(lbArrays2[j + len], lbArrays2[j], 0);
+                                else
+                                    MoveShell2(lbArrays2[j + len], lbArrays2[j], 1);
+                            }
+                        } else {
+                            if (j < len) {
+                                Move2(lbArrays2[j + len], lbArrays2[j], 0);
+                            } else {
+                                if (x <= array2[j - len])
+                                    Move2(lbArrays2[j + len], lbArrays2[j], 0);
+                                else
+                                    Move2(lbArrays2[j + len], lbArrays2[j], 1);
+                            }
+                        }
+                        j -= len;
+                        highLight2(8);
+                    }
+                    array2[j + len] = x;
+                    highLight2(9);
+                    setlbPoint2(lbPoint2, -1, null);
+                }
+            }
+        }
+        highLight2(0);
+        long endTime = System.currentTimeMillis();
+        time2 = endTime-startTime;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HeapSort">
@@ -1963,7 +2289,7 @@ public class CompareForm extends JFrame{
 
     public void SwapinHeap(JLabel lb1, JLabel lb2) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2021,7 +2347,7 @@ public class CompareForm extends JFrame{
 
     public void SwapwithoutMoving(JLabel lb1, JLabel lb2) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2172,7 +2498,7 @@ public class CompareForm extends JFrame{
 //                    lsCode.ensureIndexIsVisible(line); // Tu cuon den dong dang highlight
                     Thread.sleep(time);
                 } catch (Exception e) {
-
+                    e.printStackTrace();
                 }
             }
         });
@@ -2183,12 +2509,12 @@ public class CompareForm extends JFrame{
         curT2++;
 
         int cur = curT2;
-        threads[cur] = new Thread(new Runnable() {
+        threads2[cur] = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (cur != 0) {
-                        threads[cur-1].join();
+                        threads2[cur-1].join();
                     }
 //                    lsCode.setSelectedIndex(line);
 //                    lsCode.ensureIndexIsVisible(line); // Tu cuon den dong dang highlight
@@ -2198,7 +2524,7 @@ public class CompareForm extends JFrame{
                 }
             }
         });
-        threads[cur].start();
+        threads2[cur].start();
     }
 
     /*
@@ -2257,12 +2583,12 @@ public class CompareForm extends JFrame{
         curT2++;
 
         int cur = curT2;
-        threads[cur] = new Thread(new Runnable() {
+        threads2[cur] = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     if (cur != 0) {
-                        threads[cur-1].join();
+                        threads2[cur-1].join();
                     }
                     setState(4);
                     for (int i = 0; i < num; i++) {
@@ -2284,7 +2610,7 @@ public class CompareForm extends JFrame{
                 }
             }
         });
-        threads[cur].start();
+        threads2[cur].start();
     }
 
     // <editor-fold defaultstate="collapsed" desc="QuickSort">
@@ -2296,7 +2622,7 @@ public class CompareForm extends JFrame{
 
     public void Coloring(JLabel lb1, Color c) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2314,7 +2640,7 @@ public class CompareForm extends JFrame{
 
     public void Coloring(int left, int right, Color c) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2421,7 +2747,7 @@ public class CompareForm extends JFrame{
     // <editor-fold defaultstate="collapsed" desc="MergeSort">
     public void PutUp(int left, int right) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2459,7 +2785,7 @@ public class CompareForm extends JFrame{
 
     public void PutDown(JLabel lb1, int x, int y) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override
@@ -2504,7 +2830,7 @@ public class CompareForm extends JFrame{
 
     public void Relocat(int left, int right, int[] T) {
         curT ++;
-        System.out.println(curT);
+//        System.out.println(curT);
         int cur = curT;
         threads[cur] = new Thread(new Runnable() {
             @Override

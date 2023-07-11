@@ -24,7 +24,7 @@ public class MainForm extends JFrame{
     private JSpinner spNum;
     private JButton btnCreateArray, btnDeleteArray, btnSetZero;
     private JPanel pnSetValueArray;
-    private JButton btnRandom, btnByHand, btnOpenFile, btnReadFile;
+    private JButton btnRandom, btnOpenFile, btnReadFile;
     private JPanel pnCode;
     private JSlider slSize;
     private JScrollPane pnScroll;
@@ -41,7 +41,7 @@ public class MainForm extends JFrame{
     private JRadioButton rdIncrease, rdDecrease;
     private ActionListener eIncrease, eDecrease;
     private boolean isIncrease = true;
-    private JButton btnSort, btnStop;
+    private JButton btnSort;
     private JSlider slSpeed;
     private ChangeListener eSpeed;
     public int num;
@@ -58,7 +58,7 @@ public class MainForm extends JFrame{
     private int[] lbR = new int[50];
     private File file = new File ("src/array.txt");
     private float speed;
-    private JButton btnNewButton;
+//    private JButton btnNewButton;
     private JButton btnCompare;
     private JPanel pnAction;
     private boolean isStep = false;
@@ -71,7 +71,7 @@ public class MainForm extends JFrame{
 
 
     public MainForm(){
-        setTitle("Mo Phong Thuat Toan Title");
+        setTitle("Mo Phong Thuat Toan");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(1372, 742);
         setContentPane(pnMain);
@@ -132,8 +132,10 @@ public class MainForm extends JFrame{
         btnCompare.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+
                 CompareForm compareForm = new CompareForm();
-                compareForm.show();
+                compareForm.setVisible(true);
 
             }
         });
@@ -454,7 +456,7 @@ public class MainForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(true);
+//                btnByHand.setEnabled(true);
                 btnOpenFile.setEnabled(true);
                 btnReadFile.setEnabled(true);
 
@@ -473,7 +475,7 @@ public class MainForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
                 break;
 
             case 1: //created arrays, be waiting to set value arrays.
@@ -481,7 +483,7 @@ public class MainForm extends JFrame{
                 btnSetZero.setEnabled(true);
 
                 btnRandom.setEnabled(true);
-                btnByHand.setEnabled(true);
+//                btnByHand.setEnabled(true);
                 btnOpenFile.setEnabled(true);
                 btnReadFile.setEnabled(true);
 
@@ -519,7 +521,7 @@ public class MainForm extends JFrame{
                 btnSort.setEnabled(true);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
                 break;
 
             case 3: //sorting
@@ -528,7 +530,7 @@ public class MainForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(false);
+//                btnByHand.setEnabled(false);
                 btnOpenFile.setEnabled(false);
                 btnReadFile.setEnabled(false);
 
@@ -547,7 +549,7 @@ public class MainForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(true);
                 //btnNext2.setEnabled(true);
-                btnStop.setEnabled(true);
+//                btnStop.setEnabled(true);
                 break;
 
             case 4: //sort done
@@ -556,7 +558,7 @@ public class MainForm extends JFrame{
                 btnSetZero.setEnabled(true);
 
                 btnRandom.setEnabled(true);
-                btnByHand.setEnabled(true);
+//                btnByHand.setEnabled(true);
                 btnOpenFile.setEnabled(true);
                 btnReadFile.setEnabled(true);
 
@@ -575,7 +577,7 @@ public class MainForm extends JFrame{
                 btnSort.setEnabled(true);
                 //btnNext.setEnabled(true);
                 //btnNext2.setEnabled(true);
-                btnStop.setEnabled(true);
+//                btnStop.setEnabled(true);
                 break;
             default:
                 btnCreateArray.setEnabled(true);
@@ -583,7 +585,7 @@ public class MainForm extends JFrame{
                 btnSetZero.setEnabled(false);
 
                 btnRandom.setEnabled(false);
-                btnByHand.setEnabled(true);
+//                btnByHand.setEnabled(true);
                 btnOpenFile.setEnabled(true);
                 btnReadFile.setEnabled(true);
 
@@ -602,7 +604,7 @@ public class MainForm extends JFrame{
                 btnSort.setEnabled(false);
                 //btnNext.setEnabled(false);
                 //btnNext2.setEnabled(false);
-                btnStop.setEnabled(false);
+//                btnStop.setEnabled(false);
         }
     }
 
